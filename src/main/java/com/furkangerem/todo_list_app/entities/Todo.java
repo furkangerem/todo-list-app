@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Table(name = "todos")
@@ -23,9 +23,11 @@ public class Todo extends BaseEntity {
     @Column(name = "text", length = 512, nullable = false)
     private String text;
     @Column(name = "created_date", length = 32, nullable = false)
-    private LocalDateTime createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "due_date", length = 32, nullable = false)
-    private LocalDateTime dueDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dueDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "todo_status")
