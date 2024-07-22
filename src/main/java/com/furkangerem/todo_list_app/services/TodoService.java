@@ -29,7 +29,7 @@ public class TodoService implements ITodoService {
     @Override
     public Todo createTodo(TodoCreateDto todoCreateDto) {
 
-        User user = userService.getUserById(todoCreateDto.getUserId().getId());
+        User user = userService.getUserById(todoCreateDto.getUserId());
         if (user == null)
             return null;
 

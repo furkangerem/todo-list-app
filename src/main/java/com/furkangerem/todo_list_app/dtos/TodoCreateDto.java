@@ -6,14 +6,15 @@ import com.furkangerem.todo_list_app.entities.enums.TodoStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class TodoCreateDto {
 
     private String title;
     private String text;
-    private LocalDateTime dueDate;
+    private Date dueDate;
     private TodoStatus todoStatus;
     private TodoPriority todoPriority;
-    private User userId;
+    private Long userId;
 }
