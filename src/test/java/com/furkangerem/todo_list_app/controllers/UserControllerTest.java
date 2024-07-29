@@ -1,5 +1,6 @@
 package com.furkangerem.todo_list_app.controllers;
 
+import com.furkangerem.todo_list_app.dtos.UserUpdateDto;
 import com.furkangerem.todo_list_app.entities.User;
 import com.furkangerem.todo_list_app.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ public class UserControllerTest {
     private UserService userService;
 
     private User user;
+    private UserUpdateDto userUpdateDto;
 
     @BeforeEach
     public void setup() {
@@ -39,6 +41,10 @@ public class UserControllerTest {
         user.setUserName("testuser");
         user.setPassword("password");
         user.setEmail("testuser@example.com");
+
+        // Create the UserUpdateDto object for the entire test cases.
+        userUpdateDto = new UserUpdateDto();
+        userUpdateDto.setPassword("updatedPassword");
     }
 
     @Test
@@ -120,30 +126,30 @@ public class UserControllerTest {
     public void testUpdateUserById_Success() {
 
         // Mocking the userService.updateUserById() method.
-        when(userService.updateUserById(1L, user)).thenReturn(user);
+        when(userService.updateUserById(1L, userUpdateDto)).thenReturn(user);
 
         // Call the updateUserById() method and check the result.
-        ResponseEntity<String> response = userController.updateUserById(1L, user);
+        ResponseEntity<String> response = userController.updateUserById(1L, userUpdateDto);
 
         // Check the Status and Body.
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("User updated successfully!", response.getBody());
-        verify(userService, times(1)).updateUserById(1L, user);
+        verify(userService, times(1)).updateUserById(1L, userUpdateDto);
     }
 
     @Test
     public void testUpdateUserById_Failure() {
 
         // Mocking the userService.updateUserById() method.
-        when(userService.updateUserById(1L, user)).thenReturn(null);
+        when(userService.updateUserById(1L, userUpdateDto)).thenReturn(null);
 
         // Call the updateUserById() method and check the result.
-        ResponseEntity<String> response = userController.updateUserById(1L, user);
+        ResponseEntity<String> response = userController.updateUserById(1L, userUpdateDto);
 
         // Check the Status and Body.
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Failed to update User!", response.getBody());
-        verify(userService, times(1)).updateUserById(1L, user);
+        verify(userService, times(1)).updateUserById(1L, userUpdateDto);
     }
 
     @Test

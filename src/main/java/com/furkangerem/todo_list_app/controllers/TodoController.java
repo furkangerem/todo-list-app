@@ -1,6 +1,7 @@
 package com.furkangerem.todo_list_app.controllers;
 
 import com.furkangerem.todo_list_app.dtos.TodoCreateDto;
+import com.furkangerem.todo_list_app.dtos.TodoGetResponseDto;
 import com.furkangerem.todo_list_app.dtos.TodoUpdateDto;
 import com.furkangerem.todo_list_app.entities.Todo;
 import com.furkangerem.todo_list_app.services.TodoService;
@@ -22,8 +23,8 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Todo>> getAllTodos(@RequestParam Optional<Long> userId) {
-        List<Todo> todos = todoService.getAllTodos(userId);
+    public ResponseEntity<List<TodoGetResponseDto>> getAllTodos(@RequestParam Optional<Long> userId) {
+        List<TodoGetResponseDto> todos = todoService.getAllTodos(userId);
         return ResponseEntity.ok(todos);
     }
 

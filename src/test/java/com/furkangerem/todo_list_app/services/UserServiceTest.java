@@ -1,5 +1,6 @@
 package com.furkangerem.todo_list_app.services;
 
+import com.furkangerem.todo_list_app.dtos.UserUpdateDto;
 import com.furkangerem.todo_list_app.entities.User;
 import com.furkangerem.todo_list_app.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,20 +89,20 @@ public class UserServiceTest {
     public void testUpdateUserById() {
         // Preparation: Create the current and will be updated user.
         User existingUser = new User();
-        existingUser.setUserName("currentTestUser");
-        User updatedUser = new User();
-        updatedUser.setUserName("updatedTestUser");
+        existingUser.setPassword("currentTestUserPassword");
+        UserUpdateDto updatedUserUpdateDto = new UserUpdateDto();
+        updatedUserUpdateDto.setPassword("updatedTestUserPassword");
 
         // Mocking: Return the current user when userRepository.findById() is called.
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(existingUser)).thenReturn(existingUser);
 
         // Test: Call the userService.updateUserById() method.
-        User resultUser = userService.updateUserById(1L, updatedUser);
+        User resultUser = userService.updateUserById(1L, updatedUserUpdateDto);
 
         // Verification: The updated user must not be null and the username must be currentTestUser.
-        assertNotNull(updatedUser);
-        assertEquals("updatedTestUser", resultUser.getUserName());
+        assertNotNull(updatedUserUpdateDto);
+        assertEquals("updatedTestUserPassword", resultUser.getPassword());
 
     }
 

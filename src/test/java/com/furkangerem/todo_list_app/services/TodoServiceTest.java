@@ -1,6 +1,7 @@
 package com.furkangerem.todo_list_app.services;
 
 import com.furkangerem.todo_list_app.dtos.TodoCreateDto;
+import com.furkangerem.todo_list_app.dtos.TodoGetResponseDto;
 import com.furkangerem.todo_list_app.dtos.TodoUpdateDto;
 import com.furkangerem.todo_list_app.entities.Todo;
 import com.furkangerem.todo_list_app.entities.User;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,18 +42,25 @@ public class TodoServiceTest {
     @Test
     public void testGetAllTodos() {
         // Preparation: Create the todos.
+        User user = new User();
+        user.setId(1L);
+
         Todo todo = new Todo();
+        todo.setUser(user);
+
         Todo todo1 = new Todo();
+        todo1.setUser(user);
 
         // Mocking: Call todoRepository.findByUserId() to return this todos list.
         when(todoRepository.findByUserId(1L)).thenReturn(Arrays.asList(todo, todo1));
 
         // Test: Call the todoService.getAllTodos() method.
-        List<Todo> todoList = todoService.getAllTodos(Optional.of(1L));
+        List<TodoGetResponseDto> todoList = todoService.getAllTodos(Optional.of(1L));
 
         // Verification: Todolist must have 2 elements.
         assertEquals(2, todoList.size());
     }
+
 
     @Test
     public void testCreateTodo_UserNotFound() {
@@ -82,7 +89,6 @@ public class TodoServiceTest {
         todoCreateDto.setUserId(1L);
         todoCreateDto.setTodoPriority(TodoPriority.HIGH);
         todoCreateDto.setTodoStatus(TodoStatus.ONGOING);
-        todoCreateDto.setDueDate(new Date());
 
         Todo newTodo = new Todo();
         newTodo.setTitle(todoCreateDto.getTitle());
@@ -90,8 +96,6 @@ public class TodoServiceTest {
         newTodo.setTodoPriority(todoCreateDto.getTodoPriority());
         newTodo.setTodoStatus(todoCreateDto.getTodoStatus());
         newTodo.setUser(user);
-        newTodo.setCreatedDate(new Date());
-        newTodo.setDueDate(new Date());
 
         // Mocking: Return the test user when userService.getUserById() is called.
         // Mocking: Return this new to-do when todoRepository.save() is called.

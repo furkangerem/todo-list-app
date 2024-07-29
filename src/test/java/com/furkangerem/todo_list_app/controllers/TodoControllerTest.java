@@ -1,6 +1,7 @@
 package com.furkangerem.todo_list_app.controllers;
 
 import com.furkangerem.todo_list_app.dtos.TodoCreateDto;
+import com.furkangerem.todo_list_app.dtos.TodoGetResponseDto;
 import com.furkangerem.todo_list_app.dtos.TodoUpdateDto;
 import com.furkangerem.todo_list_app.entities.Todo;
 import com.furkangerem.todo_list_app.services.TodoService;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +31,7 @@ public class TodoControllerTest {
     private Todo todo;
     private TodoCreateDto todoCreateDto;
     private TodoUpdateDto todoUpdateDto;
+    private TodoGetResponseDto todoGetResponseDto;
 
     // This method runs before each test. It creates objects for whole test cases.
     @BeforeEach
@@ -43,8 +44,6 @@ public class TodoControllerTest {
         todo.setId(1L);
         todo.setTitle("Test Title");
         todo.setText("Test Text");
-        todo.setCreatedDate(new Date());
-        todo.setDueDate(new Date());
 
         // Create the TodoCreateDto object for the test scenarios.
         todoCreateDto = new TodoCreateDto();
@@ -62,10 +61,10 @@ public class TodoControllerTest {
     public void testGetAllTodos() {
 
         // Mocking the todoService.getAllTodos() method.
-        when(todoService.getAllTodos(Optional.empty())).thenReturn(Arrays.asList(todo));
+        when(todoService.getAllTodos(Optional.empty())).thenReturn(Arrays.asList(todoGetResponseDto));
 
         // Call the getAllTodos() method and check the result.
-        ResponseEntity<List<Todo>> response = todoController.getAllTodos(Optional.empty());
+        ResponseEntity<List<TodoGetResponseDto>> response = todoController.getAllTodos(Optional.empty());
 
         // Check the Status and Body.
         assertEquals(HttpStatus.OK, response.getStatusCode());

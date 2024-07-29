@@ -1,5 +1,6 @@
 package com.furkangerem.todo_list_app.controllers;
 
+import com.furkangerem.todo_list_app.dtos.UserUpdateDto;
 import com.furkangerem.todo_list_app.entities.User;
 import com.furkangerem.todo_list_app.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUserById(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUserById(id, user);
+    public ResponseEntity<String> updateUserById(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+        User updatedUser = userService.updateUserById(id, userUpdateDto);
         if (updatedUser != null)
             return ResponseEntity.ok("User updated successfully!");
         else

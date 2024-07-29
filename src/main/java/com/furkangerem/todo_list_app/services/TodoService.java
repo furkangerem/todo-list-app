@@ -1,16 +1,19 @@
 package com.furkangerem.todo_list_app.services;
 
 import com.furkangerem.todo_list_app.dtos.TodoCreateDto;
+import com.furkangerem.todo_list_app.dtos.TodoGetResponseDto;
 import com.furkangerem.todo_list_app.dtos.TodoUpdateDto;
 import com.furkangerem.todo_list_app.entities.Todo;
 import com.furkangerem.todo_list_app.entities.User;
 import com.furkangerem.todo_list_app.repositories.TodoRepository;
 import com.furkangerem.todo_list_app.services.abstracts.ITodoService;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Service
 public class TodoService implements ITodoService {
 
     private final TodoRepository todoRepository;
@@ -22,8 +25,22 @@ public class TodoService implements ITodoService {
     }
 
     @Override
-    public List<Todo> getAllTodos(Optional<Long> userId) {
-        return todoRepository.findByUserId(userId.get());
+    public List<TodoGetResponseDto> getAllTodos(Optional<Long> userId) {
+
+        List<Todo> todos;
+        if (userId.isPresent()) {
+            todos = todoRepository.findByUserId(userId.get());
+        } else {
+            todos = todoRepository.findAll();
+        }
+        return todos.stream().map(todo -> new TodoGetResponseDto(
+                todo.getId(),
+                todo.getUser().getId(),
+                todo.getTitle(),
+                todo.getText(),
+                todo.getTodoStatus(),
+                todo.getTodoPriority()
+        )).collect(Collectors.toList());
     }
 
     @Override
@@ -39,8 +56,6 @@ public class TodoService implements ITodoService {
         tempTodo.setTodoPriority(todoCreateDto.getTodoPriority());
         tempTodo.setTodoStatus(todoCreateDto.getTodoStatus());
         tempTodo.setUser(user);
-        tempTodo.setCreatedDate(new Date());
-        tempTodo.setDueDate(new Date());
 
         return todoRepository.save(tempTodo);
     }
