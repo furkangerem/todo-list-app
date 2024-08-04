@@ -37,6 +37,7 @@ public class TodoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create Todo!");
     }
 
+    // Todo: Only this method doesn't work properly. Make sure it's working.
     @GetMapping("/{id}")
     public ResponseEntity<?> getTodoById(@PathVariable Long id) {
         Todo todo = todoService.getTodoById(id);

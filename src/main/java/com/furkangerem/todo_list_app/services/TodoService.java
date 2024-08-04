@@ -73,6 +73,8 @@ public class TodoService implements ITodoService {
             Todo tempTodo = foundTodo.get();
             tempTodo.setText(todoUpdateDto.getText());
             tempTodo.setTitle(todoUpdateDto.getTitle());
+            tempTodo.setTodoStatus(todoUpdateDto.getTodoStatus());
+            tempTodo.setTodoPriority(todoUpdateDto.getTodoPriority());
             return todoRepository.save(tempTodo);
         } else
             return null;
